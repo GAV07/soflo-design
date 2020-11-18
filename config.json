@@ -2,19 +2,15 @@
 	"google": {
 		"doc": [
 			{
-				"id": "190qoOvrJNBn_Fo1Y5nMTY7Or9VEYwnRN5v1VezOn-E0",
-				"filepath": "data/patrons.json"
-			},
-			{
 				"id": "17DV5oUdsIeZf8-dILrQcsoDY_c6JSN1hfbZf4fmwFEs",
-				"filepath": "data/survey-copy.json"
+				"filepath": "data/copy.json"
 			}
 		],
 		"sheet": [
 			{
 				"id": "11eJpzhV7LgwLkjeVVW0b_AbGhVeuW-5Zvcxjikm_3Aw",
 				"gid": "768450529",
-				"filepath": "data/survey-data.csv"
+				"filepath": "src/assets/data/survey-data.csv"
 			}
 		]
 	}

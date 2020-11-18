@@ -6,5 +6,10 @@
 			<strong>{{meta.author.name}}</strong>
 		</a>
 	</p>
-	<time class='intro__time'>Month 2019</time>
+	<div class="intro__prelude">
+		{{#each copy.prelude}}
+			<p>{{value}}</p>
+		{{/each}}
+	</div>
+	{{!-- <time class='intro__time'>Month 2019</time> --}}
 </div>

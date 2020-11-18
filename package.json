@@ -8,6 +8,7 @@
     "node": "14.15.0"
   },
   "dependencies": {
+    "d3-jetpack": "^2.1.0",
     "lodash.debounce": "^4.0.8",
     "nouislider": "14.2.0"
   },
