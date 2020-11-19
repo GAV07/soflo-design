@@ -5,14 +5,23 @@ const d3j = require('d3-jetpack/build/d3v4+jetpack');
 let dataCleaned = null
 const $section = d3.selectAll(".section")
 
-function resize() {}
+function resize() {
+
+}
 
 function cleanData(data) {
+
+  //Ethnicity Question processing
+  data.map(d => {
+    d["Please specify your ethnicity?"] = d["Please specify your ethnicity?"].includes(", ") ? "Multi-ethnic" : d["Please specify your ethnicity?"]
+    d["Please specify your ethnicity?"] = d["Please specify your ethnicity?"].length == 0 ? "Other"  : d["Please specify your ethnicity?"]
+  })
+
   return data.map(d => ({
     //...d,
     journey: d["Where are you in your design journey?"],
     city: d["What city in South Florida do you live in?"],
-    gender: ["What are your preferred pronouns?"],
+    gender: d["What are your preferred pronouns?"],
     ethnicity: d["Please specify your ethnicity?"],
     age: d["What is your age?"],
     entry_point: d["How did you enter into design?"],
@@ -30,10 +39,12 @@ function cleanData(data) {
   }))
 }
 
+
 function setupSection() {
   const $sel = d3.select(this)
   const id = $sel.attr('id')
 
+  //separate chart isntances into sections
   if (id == "Demographics") {
     chartBuilder.barChart($sel, dataCleaned, "gender")
     chartBuilder.barChart($sel, dataCleaned, "ethnicity")
