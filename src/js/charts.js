@@ -1,6 +1,14 @@
 
+
+
+function dataHandling() {
+
+    
+}
+
 function barChart(element, data, column) {
     let padding = 20
+
     //data processing
     const columnAccessor = d => d[`${column}`]
     //const columnbyGroup = d3.group(data, columnAccessor)
@@ -11,22 +19,23 @@ function barChart(element, data, column) {
 
     const $div = element.select(".section__charts")
         .append("div")
-        .attr("class", "chart")
+        .attr("class", "outer-frame")
         .attr("id", column)
+        .append("div")
+        .attr("class", "inner-frame")
 
-    let width = document.querySelector(".chart").clientWidth
-    let height = document.querySelector(".chart").clientHeight
+    let width = d3.select(".inner-frame").node().offsetWidth
+    let height = d3.select(".inner-frame").node().offsetHeight
 
     const xScale = d3.scaleBand()
-        .domain(d3.range(columnCount.length))
-        .range([0, width - padding])
+        .domain(keys)
+        .range([0, width])
         .padding(0.3)
     
     const yScale = d3.scaleLinear()
         .domain([0, greatest[1]])
-        .range([height - padding, 0])
+        .range([height, 0])
     
-
     const $svg = $div.append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -35,11 +44,10 @@ function barChart(element, data, column) {
         .data(columnCount)
         .enter().append("rect")
         .attr("class", "bar")
-        .attr("x", ([, d], i) => xScale(i))
+        .attr("x", ([k, d]) => xScale(k))
         .attr("width", xScale.bandwidth())
-        .attr("y", ([, d]) => yScale(d))
-        .attr("height", ([, d]) => yScale(d))
-
+        .attr("y", ([, d]) =>  yScale(d))
+        .attr("height", ([, d]) => yScale(0) - yScale(d))
     
 }
 
