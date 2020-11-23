@@ -11,6 +11,13 @@ function resize() {
 
 function cleanData(data) {
 
+  //General Cleaning (not finished)
+  data.map(d => {
+    for (const [key, value] of Object.entries(d)) {
+      value === "" ? "NA" : value
+    }
+  })
+  
   //Ethnicity Question processing
   data.map(d => {
     d["Please specify your ethnicity?"] = d["Please specify your ethnicity?"].includes(", ") ? "Multi-ethnic" : d["Please specify your ethnicity?"]
@@ -46,14 +53,14 @@ function setupSection() {
 
   //separate chart isntances into sections
   if (id == "Demographics") {
-    chartBuilder.barChart($sel, dataCleaned, "gender")
-    chartBuilder.barChart($sel, dataCleaned, "ethnicity")
-    chartBuilder.barChart($sel, dataCleaned, "age")
+    chartBuilder.vBarChart($sel, dataCleaned, "gender")
+    chartBuilder.vBarChart($sel, dataCleaned, "ethnicity")
+    chartBuilder.vBarChart($sel, dataCleaned, "age")
   } else if (id == "Career") {
-    chartBuilder.barChart($sel, dataCleaned, "entry_point")
-    chartBuilder.barChart($sel, dataCleaned, "daily_work")
-    chartBuilder.barChart($sel, dataCleaned, "confident_skill")
-    chartBuilder.barChart($sel, dataCleaned, "dream_role")
+    chartBuilder.hBarChart($sel, dataCleaned, "entry_point")
+    chartBuilder.hBarChart($sel, dataCleaned, "daily_work")
+    chartBuilder.hBarChart($sel, dataCleaned, "confident_skill")
+    chartBuilder.hBarChart($sel, dataCleaned, "dream_role")
   } else if (id == "Descriptions") {
 
   } else {}

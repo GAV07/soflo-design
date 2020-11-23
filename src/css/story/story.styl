@@ -1,18 +1,61 @@
 /* CUSTOM STORY STYLE */
+body 
+    background-color $off-white
+    text-align left
+
+    h1
+        font-size 3.5em
+        margin 0
+        font-family $playfair
+
+    p 
+        font-family $lato
+
+    h2 
+        font-size 3em
+
+a
+    strong
+        color $red
+        text-decoration none
+
+.intro
+    color $tan
+    padding 8em 4em 4em 4em
 
 .section
+    padding 8em 4em 4em 4em
+    color $dark-blue
+
     &__charts
         display flex
-        flex-direction column
-        align-items center
+        flex-wrap wrap
+        justify-content center
 
     .outer-frame
-        width 80vw
-        height 60vh
-        background-color grey
+        position relative
+        max-width 40vw
+        width 600px
+        height 600px
+        max-height 50vh
         margin 10px
-        padding 1rem
+        padding 2rem
     
     .inner-frame
-        width: 100%
-        height: 100%
+        width 100%
+        height 100%
+    
+    svg
+        overflow visible
+
+        .bar
+            fill $dark-blue
+
+
+    .chart-title
+        position absolute
+        top -1rem
+        left 0
+        margin 0
+        text-align center
+        width 100%
