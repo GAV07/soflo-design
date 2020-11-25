@@ -11,19 +11,27 @@ function resize() {
 
 function cleanData(data) {
 
-  //General Cleaning (not finished)
-  data.map(d => {
-    for (const [key, value] of Object.entries(d)) {
-      value === "" ? "NA" : value
-    }
-  })
-  
   //Ethnicity Question processing
   data.map(d => {
     d["Please specify your ethnicity?"] = d["Please specify your ethnicity?"].includes(", ") ? "Multi-ethnic" : d["Please specify your ethnicity?"]
-    d["Please specify your ethnicity?"] = d["Please specify your ethnicity?"].length == 0 ? "Other"  : d["Please specify your ethnicity?"]
+    d["Please specify your ethnicity?"] = d["Please specify your ethnicity?"].length == 0 ? "Did not Answer"  : d["Please specify your ethnicity?"]
   })
 
+  //Enter into Design Question processing
+  data.map(d => {
+    //regex expression for capturing values between parentheses
+    const regExpPar = "/\(([^)]+)\)/"
+    const regExpBlank = "^$"
+    d["How did you enter into design?"] = d["How did you enter into design?"].replace(regExpPar, "")
+    d["How did you enter into design?"] = d["How did you enter into design?"].includes("Other Design Role") ? "Other Design Role" : d["How did you enter into design?"]
+    d["How did you enter into design?"] = d["How did you enter into design?"].replace("Bootcamp, Career Switch", "Bootcamp")
+    d["How did you enter into design?"] = d["How did you enter into design?"].length === 0 ? "Did not Answer" : d["How did you enter into design?"]
+  })
+
+  //Comfortable Question processing 
+  data.map(d => {
+    d["What area of design do you feel most confident in?"] = d["What area of design do you feel most confident in?"].length === 0 ? "Did not Answer" : d["What area of design do you feel most confident in?"]
+  })
   return data.map(d => ({
     //...d,
     journey: d["Where are you in your design journey?"],

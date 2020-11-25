@@ -12,14 +12,19 @@ const chartTitles = [
     {id: "age", title: "Age range of designers"},
     {id: "entry_point", title: "How did designers enter into design?"},
     {id: "daily_work", title: "What do designers normally do?"},
-    {id: "confident_skill", title: "What are our designers most comfortable with?"},
+    {id: "confident_skill", title: "What are our designers most confident with?"},
     {id: "dream_role", title: "What are our designer's dream role"},
 ]
 
 function chartBase(element, data, column) {
 
     const columnAccessor = d => d[`${column}`]
-    columnData = d3.rollup(data, d => d.length, columnAccessor)
+    data = d3.rollup(data, d => d.length, columnAccessor)
+
+    //sort data based on length
+    columnData = new Map([...data.entries()].sort((a, b) => a[1] - b[1]))
+
+
     greatest = d3.greatest(columnData, ([, d]) => d)
     keys = [...columnData.keys()]
     //console.log(keys)
@@ -71,7 +76,7 @@ function vBarChart(element, data, column) {
         .attr("height", ([, d]) => yScale(0) - yScale(d))
 
     const xAxis = g => g.attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(xScale).tickSize(0))
+        .call(d3.axisBottom(xScale).tickSize(8))
     
     $svg.append("g")
         .call(xAxis)
