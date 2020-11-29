@@ -1,24 +1,76 @@
 .intro
 	margin 0 auto
 	background-color $dark-blue
+	color $tan
+	padding 8em 15em 1em 15em
 
 	&__hed
 		max-width 80rem
-		text-align left
+		text-align center
 		
 	&__dek
-		max-width $column-width
-		margin-top 1rem
-		text-align left
-	
-	&__byline
-		max-width $column-width
-		margin-top 1rem
-		text-align left
-	
-	&__time
-		display block
-		max-width $column-width
-		margin 0 auto
+		max-width 80rem
 		margin-top 1rem
 		text-align center
+	
+	&__byline
+		max-width 80rem
+		margin-bottom 5em
+		text-align center
+		text-decoration none
+
+	#designer_total
+		font-size 2.5em
+		align-self center
+		font-family playfair
+
+	&__columns
+		display flex
+		justify-content space-between
+		
+	&__prelude
+		max-width 50%
+		display flex
+		flex-direction column
+		justify-content center
+
+	a.button
+		width 50%
+		padding 1rem
+		text-align center
+		align-self center
+		background-color $tan
+		-webkit-appearance button
+		-moz-appearance button
+		appearance button
+		border-radius 5px
+		text-decoration none
+		color initial	
+
+	&__map
+		border-radius 50px
+		background #1D3557
+		box-shadow  20px 20px 60px #192d4a, 
+             -20px -20px 60px #213d64
+		background-color $dark-blue
+		width 500px
+		height 500px
+		padding 1em
+		
+
+		&__inner
+			height 100%
+			width 100%
+
+		.cities
+			fill $off-white
+
+.wave
+	background-color $off-white
+
+	path
+		fill $dark-blue
+
+			
+	
+

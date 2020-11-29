@@ -3,13 +3,24 @@ import chartBuilder from "./charts"
 
 const d3j = require('d3-jetpack/build/d3v4+jetpack');
 let dataCleaned = null
+let mapData = null
 const $section = d3.selectAll(".section")
+const $intro = d3.select(".intro")
 
 function resize() {
 
 }
 
 function cleanData(data) {
+
+  //Map Data
+  data.map(d => {
+    let miami = ["Downtown miami", "miami", "Miami-Dade"]
+    for (let i=0; i < miami.length; i++) {
+      d["What city in South Florida do you live in?"] = d["What city in South Florida do you live in?"].includes(miami[i]) ? "Miami" : d["What city in South Florida do you live in?"]
+    }
+    console.log(d["What city in South Florida do you live in?"])
+  })
 
   //Ethnicity Question processing
   data.map(d => {
@@ -21,7 +32,6 @@ function cleanData(data) {
   data.map(d => {
     //regex expression for capturing values between parentheses
     const regExpPar = "/\(([^)]+)\)/"
-    const regExpBlank = "^$"
     d["How did you enter into design?"] = d["How did you enter into design?"].replace(regExpPar, "")
     d["How did you enter into design?"] = d["How did you enter into design?"].includes("Other Design Role") ? "Other Design Role" : d["How did you enter into design?"]
     d["How did you enter into design?"] = d["How did you enter into design?"].replace("Bootcamp, Career Switch", "Bootcamp")
@@ -54,6 +64,17 @@ function cleanData(data) {
   }))
 }
 
+function setupIntro() {
+  const $selTotal = d3.select(this).select("#designer_total")
+  const $selMap = d3.select(this).select(".intro__map__inner")
+
+  //total designers in survey
+  $selTotal.text(`${dataCleaned.length} Designers have shared`)
+
+  //creat intro map
+  chartBuilder.chlorMap($selMap, dataCleaned, mapData)
+}
+
 
 function setupSection() {
   const $sel = d3.select(this)
@@ -77,12 +98,16 @@ function setupSection() {
 
 function setup(err, response) {
   dataCleaned = cleanData(response[0])
+  mapData = response[1]
+  
+  $intro.each(setupIntro)
   $section.each(setupSection)
 }
 
 function init() {
-  const file = "./assets/data/survey-data.csv"
-  d3j.loadData(file, setup)
+  const survey = "./assets/data/survey-data.csv"
+  const baseMap = "./assets/data/florida_cities.json"
+  d3j.loadData(survey, baseMap, setup)
 }
 
 export default { init, resize };

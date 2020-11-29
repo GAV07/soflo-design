@@ -28,7 +28,7 @@ function chartBase(element, data, column) {
     greatest = d3.greatest(columnData, ([, d]) => d)
     keys = [...columnData.keys()]
     //console.log(keys)
-    console.log(columnData)
+    //console.log(columnData)
 
     $div = element.select(".section__charts")
         .append("div")
@@ -117,11 +117,43 @@ function hBarChart(element, data, column) {
         .attr("x", ([, d]) =>  xScale(0))
         .attr("width", ([, d]) => xScale(d))
 
-    const xAxis = g => g.attr("transform", `translate(0, 0)`)
+    const xAxis = g => g.attr("transform", `translate(10, 0)`)
+        .attr("class", "bar-labels")
         .call(d3.axisLeft(yScale).tickSize(0))
     
     $svg.append("g")
         .call(xAxis)
 }
 
-export default { vBarChart, hBarChart } 
+function chlorMap(element, data, map) {
+
+    width = d3.select(".intro__map__inner").node().offsetWidth
+    height = d3.select(".intro__map__inner").node().offsetHeight
+    const cityAccessor = d => d.city
+    data = d3.rollup(data, d => d.length, cityAccessor)
+    console.log(data)
+    console.log(map.features)
+
+    const $svg = element.append("svg")
+        .attr("width", width)
+        .attr("height", height)
+
+    
+    let projection = d3.geoAlbersUsa().fitSize([width , height], map) 
+    let path = d3.geoPath().projection(projection)
+
+    $svg.append("g")
+        .selectAll("path")
+        .data(map.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("class", "cities")
+
+    
+    
+    
+
+}
+
+export default { vBarChart, hBarChart, chlorMap } 
