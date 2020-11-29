@@ -19,7 +19,7 @@ function cleanData(data) {
     for (let i=0; i < miami.length; i++) {
       d["What city in South Florida do you live in?"] = d["What city in South Florida do you live in?"].includes(miami[i]) ? "Miami" : d["What city in South Florida do you live in?"]
     }
-    console.log(d["What city in South Florida do you live in?"])
+    //console.log(d["What city in South Florida do you live in?"])
   })
 
   //Ethnicity Question processing

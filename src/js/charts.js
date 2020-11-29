@@ -1,3 +1,4 @@
+import { color } from "d3-jetpack/build/d3v4+jetpack"
 
 //Semi-global variables
 let width = null
@@ -20,6 +21,16 @@ function chartBase(element, data, column) {
 
     const columnAccessor = d => d[`${column}`]
     data = d3.rollup(data, d => d.length, columnAccessor)
+
+    //Converting lengths into percentages for accesibility
+    let total = 0
+    for (let value of data.values()) {
+        total += value
+    }
+    for (let [cat, len] of data.entries()) {
+        data.set(cat, Math.round((len / total) * 100))
+    }
+    console.log(data)
 
     //sort data based on length
     columnData = new Map([...data.entries()].sort((a, b) => a[1] - b[1]))
@@ -75,6 +86,14 @@ function vBarChart(element, data, column) {
         .attr("y", ([, d]) =>  yScale(d))
         .attr("height", ([, d]) => yScale(0) - yScale(d))
 
+    $svg.selectAll("text")
+        .data(columnData)
+        .enter().append("text")
+        .attr("class", "vPercentages")
+        .text(([k,d]) => `${d}%`)
+        .attr("x", ([k, d]) => xScale(k) + 70)
+        .attr("y", ([, d]) => yScale(d) + 30)
+
     const xAxis = g => g.attr("transform", `translate(0, ${height})`)
         .call(d3.axisBottom(xScale).tickSize(8))
     
@@ -117,6 +136,15 @@ function hBarChart(element, data, column) {
         .attr("x", ([, d]) =>  xScale(0))
         .attr("width", ([, d]) => xScale(d))
 
+    $svg.selectAll("text")
+        .data(columnData)
+        .enter().append("text")
+        .attr("class", "hPercentages")
+        .text(([k,d]) => `${d}%`)
+        .attr("x", ([, d]) => xScale(d) + 10)
+        .attr("y", ([k, d]) => yScale(k) + 25)
+
+
     const xAxis = g => g.attr("transform", `translate(10, 0)`)
         .attr("class", "bar-labels")
         .call(d3.axisLeft(yScale).tickSize(0))
@@ -131,8 +159,7 @@ function chlorMap(element, data, map) {
     height = d3.select(".intro__map__inner").node().offsetHeight
     const cityAccessor = d => d.city
     data = d3.rollup(data, d => d.length, cityAccessor)
-    console.log(data)
-    console.log(map.features)
+    const color = d3.scaleQuantize([0, 100], d3.schemeOranges[9])
 
     const $svg = element.append("svg")
         .attr("width", width)
@@ -142,13 +169,25 @@ function chlorMap(element, data, map) {
     let projection = d3.geoAlbersUsa().fitSize([width , height], map) 
     let path = d3.geoPath().projection(projection)
 
-    $svg.append("g")
+    const $map = $svg.append("g")
         .selectAll("path")
         .data(map.features)
         .enter()
         .append("path")
         .attr("d", path)
         .attr("class", "cities")
+        .attr("fill", d => data.get(d.properties.NAME) ? color(data.get(d.properties.NAME)) : "#457B9D")
+
+    $svg.call(d3.zoom()
+            .extent([[0, 0], [width, height]])
+            .scaleExtent([1, 8])
+            .on("zoom", zoomed))
+
+    function zoomed({transform}) {
+        $map.attr("transform", transform)
+    }
+
+        
 
     
     
