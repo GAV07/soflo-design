@@ -55,15 +55,16 @@ a
             color white
             text-anchor start
 
-        .vPercentages
-            font-family lato
-            font-size 1em
-            fill $off-white
-
-        .hPercentages
+        .vPercentages, .hPercentages, .hLabels
             font-family lato
             font-size .85em
+            fill $off-white
+            text-anchor middle
+            alignment-baseline middle
 
+        .hLabels
+            text-anchor start
+            alignment-baseline middle
 
     .chart-title
         position absolute

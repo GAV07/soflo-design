@@ -90,8 +90,8 @@ function vBarChart(element, data, column) {
         .data(columnData)
         .enter().append("text")
         .attr("class", "vPercentages")
-        .text(([k,d]) => `${d}%`)
-        .attr("x", ([k, d]) => xScale(k) + 70)
+        .text(([k,d]) => d > 10 ? `${d}%` : "")
+        .attr("x", ([k, d]) => xScale(k) + (xScale.bandwidth() / 2))
         .attr("y", ([, d]) => yScale(d) + 30)
 
     const xAxis = g => g.attr("transform", `translate(0, ${height})`)
@@ -136,21 +136,23 @@ function hBarChart(element, data, column) {
         .attr("x", ([, d]) =>  xScale(0))
         .attr("width", ([, d]) => xScale(d))
 
-    $svg.selectAll("text")
+    $svg.selectAll("text.hPercentages")
         .data(columnData)
         .enter().append("text")
         .attr("class", "hPercentages")
-        .text(([k,d]) => `${d}%`)
-        .attr("x", ([, d]) => xScale(d) + 10)
-        .attr("y", ([k, d]) => yScale(k) + 25)
+        .text(([k,d]) => d > 10 ? `${d}%` : "")
+        .attr("x", ([, d]) => xScale(d) - 30)
+        .attr("y", ([k, d]) => yScale(k) + (yScale.bandwidth() / 2))
+        
+    $svg.selectAll("text.hLabels")
+            .data(columnData)
+            .enter().append("text")
+            .attr("class", "hLabels")
+            .text(([k,d]) => d > 10 ? `${k}` : "")
+            .attr("x", ([, d]) => xScale(1))
+            .attr("y", ([k, d]) => yScale(k) + (yScale.bandwidth() / 2))
 
-
-    const xAxis = g => g.attr("transform", `translate(10, 0)`)
-        .attr("class", "bar-labels")
-        .call(d3.axisLeft(yScale).tickSize(0))
     
-    $svg.append("g")
-        .call(xAxis)
 }
 
 function chlorMap(element, data, map) {
